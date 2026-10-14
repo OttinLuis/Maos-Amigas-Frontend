@@ -1,16 +1,181 @@
-# React + Vite
+# Mãos Amigas — Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interface web da plataforma Mãos Amigas, desenvolvida para conectar pessoas a profissionais de psicologia e facilitar o acesso ao atendimento psicológico on-line.
 
-Currently, two official plugins are available:
+O projeto oferece uma interface para autenticação de usuários, consulta de psicólogos, acompanhamento de consultas e interação com um chatbot baseado em inteligência artificial.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funcionalidades
 
-## React Compiler
+- **Autenticação:** páginas de login e cadastro de usuários.
+- **Página inicial:** acesso às principais funcionalidades da plataforma.
+- **Psicólogos:** visualização dos profissionais disponíveis.
+- **Consultas:** acesso às funcionalidades relacionadas aos agendamentos.
+- **Chat com inteligência artificial:** interface de conversação integrada ao serviço de IA do back-end.
+- **Integração com API REST:** comunicação com o back-end para consumir os serviços da aplicação.
+- **Navegação entre páginas:** gerenciamento de rotas com React Router.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologias utilizadas
 
-## Expanding the Oxlint configuration
+- React
+- Vite
+- JavaScript
+- HTML5
+- CSS3
+- Axios
+- React Router
+- Lucide React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Arquitetura
+
+O front-end é responsável pela interface e pela interação com o usuário. As regras de negócio, autenticação, persistência dos dados e processamento das requisições ficam no back-end.
+
+```text
+Usuário
+   |
+   v
+React + Vite
+   |
+   v
+Axios / API REST
+   |
+   v
+Spring Boot
+   |
+   +---- PostgreSQL
+   |
+   +---- Serviço de inteligência artificial
+```
+
+## Pré-requisitos
+
+Antes de executar o projeto, instale:
+
+- Node.js
+- npm
+- Git
+
+O back-end Spring Boot deve estar em execução para utilizar as funcionalidades que dependem da API.
+
+## Como executar localmente
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/OttinLuis/Maos-Amigas-Frontend.git
+```
+
+### 2. Entrar na pasta do projeto
+
+```bash
+cd Maos-Amigas-Frontend
+```
+
+### 3. Instalar as dependências
+
+```bash
+npm install
+```
+
+### 4. Configurar a URL da API
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+VITE_API_URL=http://localhost:8080
+```
+
+Essa configuração pressupõe que o serviço Axios utiliza a variável `VITE_API_URL`. Caso o arquivo `src/services/api.js` utilize outra configuração, ajuste-o para ler essa variável.
+
+Não coloque senhas, tokens privados ou chaves de API nesse arquivo. Variáveis `VITE_*` são incorporadas ao código disponibilizado no navegador e não devem conter segredos.
+
+### 5. Iniciar o ambiente de desenvolvimento
+
+```bash
+npm run dev
+```
+
+Por padrão, o Vite disponibiliza a aplicação em:
+
+http://localhost:5173
+
+Se essa porta estiver ocupada, o Vite poderá utilizar outra porta, informada no terminal.
+
+## Compilação para produção
+
+Para gerar a versão de produção:
+
+```bash
+npm run build
+```
+
+Os arquivos compilados serão gerados no diretório `dist/`.
+
+Para testar localmente a versão compilada:
+
+```bash
+npm run preview
+```
+
+## Estrutura do projeto
+
+```text
+src/
+├── assets/
+├── components/
+│   ├── Footer.jsx
+│   └── Navbar.jsx
+├── pages/
+│   ├── Cadastro.jsx
+│   ├── ChatIA.jsx
+│   ├── Consultas.jsx
+│   ├── Home.jsx
+│   ├── Login.jsx
+│   └── Psicologos.jsx
+├── services/
+│   └── api.js
+├── App.jsx
+├── App.css
+├── index.css
+└── main.jsx
+
+public/
+├── favicon.svg
+├── icons.svg
+└── logo-maos-amigas.png
+
+index.html
+package.json
+vite.config.js
+```
+
+## Integração com o back-end
+
+O front-end consome os endpoints REST disponibilizados pela API do Mãos Amigas, desenvolvida com Java e Spring Boot.
+
+O endereço local padrão da API é `http://localhost:8080`. Para executar a aplicação completa, o back-end e seus serviços necessários devem estar configurados e em execução.
+
+A configuração de CORS do back-end também deve permitir a origem utilizada pelo front-end.
+
+Repositório do back-end:
+
+https://github.com/OttinLuis/Maos-Amigas
+
+## Executar com Docker
+
+O ambiente de desenvolvimento do projeto utiliza Docker Compose e Colima para gerenciar os serviços do back-end. O front-end pode ser executado separadamente com npm.
+
+Consulte o README do back-end para obter as instruções de configuração dos serviços e do banco de dados.
+
+## Objetivo do projeto
+
+O Mãos Amigas tem como objetivo facilitar o acesso ao atendimento psicológico por meio de uma plataforma digital que reúne profissionais, consultas on-line e recursos de inteligência artificial.
+
+O projeto também permite aplicar conhecimentos de desenvolvimento web, integração entre aplicações, consumo de APIs REST e organização de interfaces com React.
+
+## Autor
+
+**Otto Luis**
+
+GitHub: https://github.com/OttinLuis
+
+Repositório do front-end: https://github.com/OttinLuis/Maos-Amigas-Frontend
