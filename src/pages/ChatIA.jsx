@@ -8,6 +8,7 @@ import "./ChatIA.css";
 const LOGO = "/logo-maos-amigas.png";
 const LIMITE = 2000;
 const TIMEOUT_MS = 45000;
+const ID_INICIAL = "inicial";
 
 class RespostaInvalidaError extends Error {}
 
@@ -20,6 +21,8 @@ const markdownComponents = {
   a: ({ node, ...props }) => (
     <a {...props} target="_blank" rel="noopener noreferrer" />
   ),
+  // Não carrega imagens vindas do texto da IA
+  img: () => null,
 };
 
 function hora() {
@@ -31,11 +34,11 @@ function hora() {
 
 function criarMensagemInicial() {
   return {
-    id: 1,
+    id: ID_INICIAL,
     role: "assistant",
     hora: hora(),
     content:
-      "Olá! Seja bem-vindo ao Mãos Amigas. Estou aqui para ajudar você a encontrar psicólogos e consultar horários disponíveis para atendimento. Como posso ajudar hoje?",
+      "Olá! Eu sou o assistente virtual do Mãos Amigas. Posso ajudar você a encontrar psicólogos e consultar horários para atendimento. Como posso ajudar hoje?",
   };
 }
 
@@ -60,20 +63,35 @@ const sugestoes = [
   },
 ];
 
-function IconeSugestao({ tipo }) {
-  const props = {
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.7,
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": true,
-  };
+const beneficios = [
+  {
+    titulo: "Encontre profissionais",
+    texto: "Conheça os psicólogos disponíveis na plataforma.",
+  },
+  {
+    titulo: "Consulte horários",
+    texto: "Veja opções de atendimento conforme a disponibilidade.",
+  },
+  {
+    titulo: "Organize sua consulta",
+    texto: "Receba orientações para realizar seu agendamento.",
+  },
+];
 
+const propsIcone = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.8,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": true,
+};
+
+function IconeSugestao({ tipo }) {
   if (tipo === "user") {
     return (
-      <svg {...props}>
+      <svg {...propsIcone}>
         <circle cx="12" cy="8" r="3.6" />
         <path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4" />
       </svg>
@@ -82,7 +100,7 @@ function IconeSugestao({ tipo }) {
 
   if (tipo === "clock") {
     return (
-      <svg {...props}>
+      <svg {...propsIcone}>
         <circle cx="12" cy="12" r="8.5" />
         <path d="M12 7.5V12l3 2" />
       </svg>
@@ -90,7 +108,7 @@ function IconeSugestao({ tipo }) {
   }
 
   return (
-    <svg {...props}>
+    <svg {...propsIcone}>
       <rect x="4" y="5.5" width="16" height="14" rx="3" />
       <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" />
     </svg>
@@ -98,30 +116,24 @@ function IconeSugestao({ tipo }) {
 }
 
 function IconeCopiar({ copiado }) {
-  const props = {
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.8,
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": true,
-  };
-
   if (copiado) {
     return (
-      <svg {...props}>
+      <svg {...propsIcone}>
         <path d="m5 12.5 4.5 4.5L19 7.5" />
       </svg>
     );
   }
 
   return (
-    <svg {...props}>
+    <svg {...propsIcone}>
       <rect x="8.5" y="8.5" width="11" height="11" rx="2.5" />
       <path d="M15.5 8.5v-1a2.5 2.5 0 0 0-2.5-2.5H7A2.5 2.5 0 0 0 4.5 7.5v6A2.5 2.5 0 0 0 7 16h1.5" />
     </svg>
   );
+}
+
+function reduzirMovimento() {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
 export default function ChatIA() {
@@ -136,7 +148,7 @@ export default function ChatIA() {
   useEffect(() => {
     listaRef.current?.scrollTo({
       top: listaRef.current.scrollHeight,
-      behavior: "smooth",
+      behavior: reduzirMovimento() ? "auto" : "smooth",
     });
   }, [mensagens, carregando, erro]);
 
@@ -210,7 +222,7 @@ export default function ChatIA() {
           "O assistente demorou mais que o esperado para responder. Tente novamente.";
       } else if (!error.response) {
         mensagemErro =
-          "Não consegui conectar ao servidor. Verifique se a API do Mãos Amigas está funcionando na porta 8080.";
+          "Não consegui conectar ao servidor. Verifique sua conexão e tente novamente.";
       } else if (status === 401) {
         mensagemErro =
           "Sua sessão não está autenticada ou expirou. Entre novamente na sua conta.";
@@ -266,22 +278,15 @@ export default function ChatIA() {
 
   const ultima = mensagens[mensagens.length - 1];
   const podeReenviar = ultima?.role === "user";
+  const conversaNova = mensagens.length === 1;
   const mostrarAtalhos =
-    mensagens.length > 1 && ultima?.role === "assistant" && !carregando && !erro;
+    !conversaNova && ultima?.role === "assistant" && !carregando && !erro;
 
   return (
-    <main className="chat-page">
+    <div className="chat-page">
       <header className="chat-topbar">
-        <Link to="/home" className="chat-back">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.9"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
+        <Link to="/home" className="chat-back" aria-label="Voltar ao início">
+          <svg {...propsIcone} strokeWidth={1.9}>
             <path d="M19 12H5M11 6l-6 6 6 6" />
           </svg>
           <span>Voltar ao início</span>
@@ -293,22 +298,14 @@ export default function ChatIA() {
           aria-label="Mãos Amigas - ir para o início"
         >
           <img src={LOGO} alt="" className="chat-brand-logo" />
-          <div className="chat-brand-text">
+          <span className="chat-brand-text">
             <strong>Mãos Amigas</strong>
             <span>Assistente virtual</span>
-          </div>
+          </span>
         </Link>
 
         <Link to="/psicologos" className="chat-professionals-link">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
+          <svg {...propsIcone}>
             <circle cx="12" cy="8" r="3.6" />
             <path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4" />
           </svg>
@@ -316,53 +313,27 @@ export default function ChatIA() {
         </Link>
       </header>
 
-      <section className="chat-workspace">
-        <aside className="chat-sidebar">
-          <div className="chat-sidebar-illustration">
-            <div className="chat-orbit chat-orbit-one" />
-            <div className="chat-orbit chat-orbit-two" />
-            <div className="chat-illustration-center">
-              <img src={LOGO} alt="" className="chat-illustration-logo" />
-            </div>
-          </div>
-
-          <p className="chat-eyebrow">Seu espaço de acolhimento</p>
+      <main className="chat-workspace">
+        <div className="chat-intro">
           <h1>Você não precisa resolver tudo sozinho.</h1>
-          <p className="chat-sidebar-description">
+          <p className="chat-intro-description">
             Converse com nosso assistente para conhecer os profissionais e
             encontrar possibilidades de atendimento psicológico.
           </p>
 
-          <div className="chat-benefits">
-            <div className="chat-benefit">
-              <span className="chat-benefit-icon">1</span>
-              <div>
-                <strong>Encontre profissionais</strong>
-                <p>Conheça os psicólogos disponíveis na plataforma.</p>
-              </div>
-            </div>
-
-            <div className="chat-benefit">
-              <span className="chat-benefit-icon">2</span>
-              <div>
-                <strong>Consulte horários</strong>
-                <p>Veja opções de atendimento conforme a disponibilidade.</p>
-              </div>
-            </div>
-
-            <div className="chat-benefit">
-              <span className="chat-benefit-icon">3</span>
-              <div>
-                <strong>Organize sua consulta</strong>
-                <p>Receba orientações para realizar seu agendamento.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="chat-privacy-note">
-            <span aria-hidden="true">♡</span>
-            <p>Um espaço de acolhimento, respeito e cuidado.</p>
-          </div>
+          <ol className="chat-benefits">
+            {beneficios.map((item, i) => (
+              <li className="chat-benefit" key={item.titulo}>
+                <span className="chat-benefit-number" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <div>
+                  <strong>{item.titulo}</strong>
+                  <p>{item.texto}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
 
           <div className="chat-emergency">
             <strong>Precisa de ajuda agora?</strong>
@@ -381,7 +352,7 @@ export default function ChatIA() {
               </li>
             </ul>
           </div>
-        </aside>
+        </div>
 
         <section className="chat-panel" aria-label="Conversa com o assistente">
           <div className="chat-panel-header">
@@ -390,13 +361,10 @@ export default function ChatIA() {
             </div>
             <div className="chat-panel-title">
               <strong>Assistente Mãos Amigas</strong>
-              <span>
-                <span className="chat-status-dot" />
-                Online agora
-              </span>
+              <span>Assistente virtual com inteligência artificial</span>
             </div>
 
-            {mensagens.length > 1 && (
+            {!conversaNova && (
               <button
                 type="button"
                 className="chat-new-button"
@@ -406,12 +374,12 @@ export default function ChatIA() {
                 Nova conversa
               </button>
             )}
-            <span className="chat-ai-badge">IA</span>
           </div>
 
           <div
             className="chat-messages"
             ref={listaRef}
+            role="log"
             aria-live="polite"
             aria-busy={carregando}
           >
@@ -454,12 +422,16 @@ export default function ChatIA() {
                     )}
                   </div>
 
-                  {item.role === "assistant" && item.id !== 1 && (
+                  {item.role === "assistant" && item.id !== ID_INICIAL && (
                     <button
                       type="button"
                       className="chat-copy"
                       onClick={() => copiar(item)}
-                      aria-label="Copiar resposta"
+                      aria-label={
+                        copiadoId === item.id
+                          ? "Resposta copiada"
+                          : "Copiar resposta"
+                      }
                     >
                       <IconeCopiar copiado={copiadoId === item.id} />
                       {copiadoId === item.id ? "Copiado" : "Copiar"}
@@ -476,13 +448,11 @@ export default function ChatIA() {
                 </div>
                 <div className="chat-message-content">
                   <span className="chat-sender">Mãos Amigas</span>
-                  <div
-                    className="chat-bubble chat-typing"
-                    aria-label="Assistente digitando"
-                  >
-                    <span />
-                    <span />
-                    <span />
+                  <div className="chat-bubble chat-typing" role="status">
+                    <span className="chat-sr-only">Assistente digitando</span>
+                    <span className="chat-dot" aria-hidden="true" />
+                    <span className="chat-dot" aria-hidden="true" />
+                    <span className="chat-dot" aria-hidden="true" />
                   </div>
                 </div>
               </div>
@@ -510,9 +480,9 @@ export default function ChatIA() {
               </div>
             )}
 
-            {mensagens.length === 1 && !carregando && (
+            {conversaNova && !carregando && (
               <div className="chat-suggestions">
-                <span>Por onde você quer começar?</span>
+                <h2>Por onde você quer começar?</h2>
                 <div className="chat-suggestion-list">
                   {sugestoes.map((sugestao) => (
                     <button
@@ -539,8 +509,8 @@ export default function ChatIA() {
               enviarMensagem();
             }}
           >
-            <label className="chat-input-label" htmlFor="chat-message">
-              Sua mensagem
+            <label className="chat-sr-only" htmlFor="chat-message">
+              Sua mensagem para o assistente
             </label>
             <div className="chat-input-wrapper">
               <textarea
@@ -553,7 +523,6 @@ export default function ChatIA() {
                 rows={1}
                 maxLength={LIMITE}
                 disabled={carregando}
-                aria-label="Digite sua mensagem para o assistente"
               />
               <button
                 type="submit"
@@ -562,21 +531,9 @@ export default function ChatIA() {
                 aria-label="Enviar mensagem"
                 title="Enviar mensagem"
               >
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M22 2 15 22l-4-9-9-4 20-7Z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M22 2 11 13"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                <svg {...propsIcone}>
+                  <path d="M22 2 15 22l-4-9-9-4 20-7Z" />
+                  <path d="M22 2 11 13" />
                 </svg>
               </button>
             </div>
@@ -600,7 +557,7 @@ export default function ChatIA() {
             </span>
           </p>
         </section>
-      </section>
-    </main>
+      </main>
+    </div>
   );
 }
