@@ -1,0 +1,568 @@
+.cad-page {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    width: 100%;
+    min-height: 100vh;
+    color: #332641;
+    background: #faf8fc;
+    font-family: Inter, sans-serif;
+}
+
+.cad-brand-panel {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    height: 100vh;
+    padding: clamp(28px, 4vw, 58px);
+    overflow: hidden;
+    color: white;
+    background: linear-gradient(145deg, #39264e, #60457b 62%, #80649a);
+}
+
+.cad-brand,
+.cad-mobile-brand {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    font-size: 22px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cad-brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    color: #60457b;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.cad-brand-content {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: auto 0;
+    padding: 50px 0;
+}
+
+.cad-eyebrow {
+    display: block;
+    margin-bottom: 14px;
+    color: #80649a;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.cad-brand-panel .cad-eyebrow {
+    color: #e2d4ef;
+}
+
+.cad-brand-content h1 {
+    margin: 0 0 22px;
+    font-size: clamp(34px, 3.4vw, 50px);
+    line-height: 1.15;
+    letter-spacing: -1.3px;
+}
+
+.cad-brand-content > p {
+    margin: 0;
+    color: #eee6f5;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.cad-benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-top: 30px;
+}
+
+.cad-benefit > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    color: #fff;
+    background: rgb(255 255 255 / 13%);
+    border-radius: 11px;
+}
+
+.cad-benefit strong {
+    display: block;
+    margin: 1px 0 5px;
+    font-size: 14px;
+}
+
+.cad-benefit p {
+    margin: 0;
+    color: #e2d8eb;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.cad-brand-footer {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: #e2d8eb;
+    font-size: 12px;
+}
+
+.cad-decoration {
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.cad-decoration-one {
+    right: -170px;
+    top: 12%;
+}
+
+.cad-decoration-two {
+    right: -115px;
+    top: 19%;
+    width: 220px;
+    height: 220px;
+}
+
+.cad-form-panel {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+    padding: 44px clamp(24px, 4vw, 64px);
+    background: #faf8fc;
+}
+
+.cad-form-container {
+    width: 100%;
+    max-width: 680px;
+    margin: auto;
+}
+
+.cad-mobile-brand {
+    display: none;
+    color: #49365d;
+}
+
+.cad-heading {
+    margin-bottom: 30px;
+}
+
+.cad-heading h2 {
+    margin: 0 0 10px;
+    color: #332641;
+    font-size: clamp(29px, 3vw, 38px);
+    letter-spacing: -1px;
+}
+
+.cad-heading > p {
+    margin: 0;
+    color: #7d7486;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.cad-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 0 19px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eae4f0;
+}
+
+.cad-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 41px;
+    flex-shrink: 0;
+    color: #684b85;
+    background: #eee7f5;
+    border-radius: 12px;
+}
+
+.cad-section-heading h3 {
+    margin: 0 0 5px;
+    color: #41314f;
+    font-size: 15px;
+}
+
+.cad-section-heading p {
+    margin: 0;
+    color: #8a8192;
+    font-size: 12px;
+}
+
+.cad-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 16px;
+}
+
+.cad-field {
+    min-width: 0;
+}
+
+.cad-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #483c54;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cad-required {
+    color: #8a5da9;
+}
+
+.cad-input-wrap {
+    position: relative;
+}
+
+.cad-field input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 47px;
+    padding: 0 13px;
+    color: #392c47;
+    background: #fff;
+    border: 1px solid #e1d9e9;
+    border-radius: 10px;
+    outline: none;
+    font: inherit;
+    font-size: 13px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cad-field input::placeholder {
+    color: #b0a7b9;
+}
+
+.cad-field input:focus {
+    border-color: #80649a;
+    box-shadow: 0 0 0 3px rgb(128 100 154 / 12%);
+}
+
+.cad-password-field input {
+    padding-right: 47px;
+}
+
+.cad-eye-button {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: #897d95;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.cad-eye-button:hover {
+    color: #60457b;
+    background: #f4eff8;
+}
+
+.cad-required-note {
+    margin: 20px 0 13px;
+    color: #8b8293;
+    font-size: 11px;
+}
+
+.cad-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 51px;
+    padding: 14px 20px;
+    color: white;
+    background: linear-gradient(100deg, #60457b, #76549c);
+    border: 0;
+    border-radius: 11px;
+    box-shadow: 0 7px 18px rgb(96 69 123 / 18%);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.cad-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgb(96 69 123 / 24%);
+}
+
+.cad-submit:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.cad-spinner {
+    animation: cad-spin 1s linear infinite;
+}
+
+@keyframes cad-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.cad-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 13px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.cad-alert-error {
+    color: #9f2929;
+    background: #fff0f0;
+    border: 1px solid #f2cece;
+}
+
+.cad-alert-success {
+    color: #246b37;
+    background: #edf8ef;
+    border: 1px solid #c9e8d0;
+}
+
+.cad-alert-success svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.cad-login-link {
+    margin: 24px 0 0;
+    color: #7d7486;
+    font-size: 13px;
+    text-align: center;
+}
+
+.cad-login-link a {
+    color: #60457b;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.cad-login-link a:hover {
+    text-decoration: underline;
+}
+
+.cad-privacy {
+    margin: 17px 0 0;
+    color: #a098a9;
+    font-size: 11px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+@media (max-width: 1050px) {
+    .cad-page {
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .cad-brand-panel {
+        padding: 30px;
+    }
+
+    .cad-form-panel {
+        padding: 36px 25px;
+    }
+
+    .cad-brand-content h1 {
+        font-size: 35px;
+    }
+}
+
+@media (max-width: 760px) {
+    .cad-page {
+        display: block;
+    }
+
+    .cad-brand-panel {
+        display: none;
+    }
+
+    .cad-form-panel {
+        min-height: 100vh;
+        padding: 28px 20px 36px;
+    }
+
+    .cad-form-container {
+        max-width: 560px;
+    }
+
+    .cad-mobile-brand {
+        display: flex;
+        margin-bottom: 32px;
+    }
+
+    .cad-heading {
+        margin-bottom: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cad-form-panel {
+        padding: 23px 16px 30px;
+    }
+
+    .cad-fields-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .cad-heading h2 {
+        font-size: 30px;
+    }
+
+    .cad-section-heading {
+        margin-top: 26px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cad-spinner {
+        animation: none;
+    }
+
+    .cad-field input,
+    .cad-submit {
+        transition: none;
+    }
+}
+
+/* Responsividade da tela de cadastro */
+@media (max-width: 768px) {
+    .cadastro-page,
+    .register-page,
+    [class*="cadastro-page"],
+    [class*="register-page"] {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-width: 0;
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
+    .cadastro-brand-panel,
+    .register-brand-panel,
+    [class*="brand-panel"] {
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+        padding: 24px 22px;
+    }
+
+    .cadastro-form-panel,
+    .register-form-panel,
+    [class*="form-panel"] {
+        width: 100%;
+        min-width: 0;
+        padding: 24px 20px;
+    }
+
+    .cadastro-card,
+    .register-card,
+    [class*="cadastro-card"],
+    [class*="register-card"] {
+        width: 100%;
+        max-width: 600px;
+        min-width: 0;
+        margin: 0 auto;
+    }
+
+    form {
+        width: 100%;
+        min-width: 0;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        font-size: 16px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        min-height: 46px;
+    }
+
+    [class*="grid"],
+    [class*="fields-row"],
+    [class*="form-row"] {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .cadastro-brand-panel,
+    .register-brand-panel,
+    [class*="brand-panel"] {
+        padding: 20px 18px;
+    }
+
+    .cadastro-form-panel,
+    .register-form-panel,
+    [class*="form-panel"] {
+        padding: 22px 16px;
+    }
+
+    .cadastro-card,
+    .register-card,
+    [class*="cadastro-card"],
+    [class*="register-card"] {
+        padding: 0;
+    }
+
+    label {
+        line-height: 1.5;
+    }
+
+    input,
+    select,
+    textarea {
+        min-height: 44px;
+    }
+
+    button[type="submit"] {
+        min-height: 48px;
+    }
+}

@@ -1,0 +1,83 @@
+import { useMemo, useState } from "react";
+import Layout from "../components/Layout";
+import "./Psicologos.css";
+
+// Dados de exemplo. Trocar pela chamada à API quando estiver pronta.
+const psicologos = [
+  { id: 1, nome: "Ana Souza", crp: "CRP 15/00001", area: "Ansiedade", abordagem: "Terapia Cognitivo-Comportamental" },
+  { id: 2, nome: "Carlos Lima", crp: "CRP 15/00002", area: "Depressão", abordagem: "Psicanálise" },
+  { id: 3, nome: "Mariana Alves", crp: "CRP 15/00003", area: "Relacionamentos", abordagem: "Terapia Humanista" },
+  { id: 4, nome: "Rafael Costa", crp: "CRP 15/00004", area: "Ansiedade", abordagem: "Terapia Cognitivo-Comportamental" },
+];
+
+const areas = ["Todas", ...new Set(psicologos.map((p) => p.area))];
+
+function iniciais(nome) {
+  return nome
+    .split(" ")
+    .slice(0, 2)
+    .map((parte) => parte[0])
+    .join("")
+    .toUpperCase();
+}
+
+export default function Psicologos() {
+  const [busca, setBusca] = useState("");
+  const [area, setArea] = useState("Todas");
+
+  const filtrados = useMemo(() => {
+    const termo = busca.trim().toLowerCase();
+    return psicologos.filter(
+      (p) =>
+        (area === "Todas" || p.area === area) &&
+        (!termo || p.nome.toLowerCase().includes(termo))
+    );
+  }, [busca, area]);
+
+  return (
+    <Layout
+      eyebrow="Profissionais"
+      title="Encontre um psicólogo"
+      subtitle="Conheça os profissionais disponíveis e escolha quem vai acompanhar você."
+    >
+      <div className="psi-filters">
+        <input
+          type="search"
+          placeholder="Buscar por nome"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          aria-label="Buscar psicólogo por nome"
+        />
+        <div className="psi-chips">
+          {areas.map((item) => (
+            <button
+              key={item}
+              type="button"
+              className={item === area ? "psi-chip active" : "psi-chip"}
+              onClick={() => setArea(item)}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {filtrados.length === 0 ? (
+        <p className="psi-empty">Nenhum profissional encontrado com esses filtros.</p>
+      ) : (
+        <div className="psi-grid">
+          {filtrados.map((p) => (
+            <article className="psi-card" key={p.id}>
+              <div className="psi-avatar">{iniciais(p.nome)}</div>
+              <h3>{p.nome}</h3>
+              <span className="psi-crp">{p.crp}</span>
+              <span className="psi-tag">{p.area}</span>
+              <p>{p.abordagem}</p>
+              <button type="button" className="psi-button">Agendar consulta</button>
+            </article>
+          ))}
+        </div>
+      )}
+    </Layout>
+  );
+}
