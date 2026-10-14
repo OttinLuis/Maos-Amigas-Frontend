@@ -1,5 +1,10 @@
 # Mãos Amigas — Front-end
 
+<p align="center">
+  <img width="500" height="500" alt="a325c96e-bbeb-4c5c-b215-6eaad40cca04" src="https://github.com/user-attachments/assets/7c13447f-0e21-4ddc-8b16-de41ad0fa70f" />
+</p>
+
+
 Interface web da plataforma Mãos Amigas, desenvolvida para conectar pessoas a profissionais de psicologia e facilitar o acesso ao atendimento psicológico on-line.
 
 O projeto oferece uma interface para autenticação de usuários, consulta de psicólogos, acompanhamento de consultas e interação com um chatbot baseado em inteligência artificial.
